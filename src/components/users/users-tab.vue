@@ -1,30 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import User from './user.vue';
-import axios from 'axios';
-
-const udata = ref(null);
-
-// lifecycle hooks
-function load() {
-  axios.get('https://rvz-bar.ru/api/test').then((response) => {
-    udata.value = response.data;
-    //console.log(response.data[0].name);
-    //console.log(response.data);
-  });
-}
-
-onMounted(() => {
-  load();
-});
+import { ref } from 'vue';
+import store from '../../store.js';
+//import User from './user.vue';
+import NewUserModal from './new-user-modal.vue';
 </script>
 
 <template>
   <nav class="navbar bg-light">
-    <form class="d-flex">
-      <button class="btn btn-success me-2" type="button">Создать</button>
-      <input type="text" class="form-control" placeholder="Фильтр" />
-    </form>
+    <NewUserModal />
+    <button class="btn" @click="test">test</button>
   </nav>
   <table class="table table-sm table-bordered">
     <tr>
@@ -32,8 +16,28 @@ onMounted(() => {
       <th>us ID</th>
       <th>Телефон</th>
     </tr>
-    <tr v-for="u in udata">
-      <User :name="u.name" :usid="u.us_id" :phone="u.phone" :id="u.id" />
+    <tr v-for="u in store.users">
+      <td>
+        {{ u.name }}
+      </td>
+      <td>{{ u.usid }}</td>
+      <td>{{ u.phone }}</td>
+      <td>
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic mixed styles example"
+        >
+          <button
+            type="button"
+            class="btn btn-danger"
+            @click="store.deleteUser(u.id)"
+          >
+            Удалить
+          </button>
+          <button type="button" class="btn btn-success">Изменить</button>
+        </div>
+      </td>
     </tr>
   </table>
 </template>

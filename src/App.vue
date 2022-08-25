@@ -4,6 +4,12 @@
 //import HelloWorld from './components/HelloWorld.vue';
 
 import Tabs from './components/tabs.vue';
+import { onMounted } from 'vue';
+import store from './store.js';
+
+onMounted(() => {
+  store.loadUsers();
+});
 </script>
 
 <template>

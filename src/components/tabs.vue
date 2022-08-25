@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import UsersTab from './users/users-tab.vue';
+import SheduleTab from './shedule/shedule-tab.vue';
 defineProps({
   msg: String,
 });
@@ -46,7 +47,7 @@ defineProps({
         aria-labelledby="schedule-tab"
         tabindex="0"
       >
-        график
+        <SheduleTab/>
       </div>
       <div
         class="tab-pane show active"
