@@ -9,11 +9,9 @@ const store = reactive({
     });
   },
   deleteUser(id) {
-    if (confirm('Уверен?')) {
-      axios.post('https://rvz-bar.ru/api/delete-user/' + id).then(() => {
-        store.loadUsers();
-      });
-    }
+    axios.post('https://rvz-bar.ru/api/delete-user/' + id).then(() => {
+      store.loadUsers();
+    });
   },
   addUser(data) {
     axios
