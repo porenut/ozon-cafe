@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import store from '../../store.js';
-import NewUserModal from './new-user-modal.vue';
 import {
   DxDataGrid,
   DxColumn,
@@ -15,6 +14,7 @@ import {
   DxHeaderFilter,
   DxSearchPanel,
   DxFilterRow,
+  DxSimpleItem,
 } from 'devextreme-vue/data-grid';
 
 const columns = [
@@ -29,6 +29,9 @@ const columns = [
 function onCreate(e) {
   store.addUser(e.key);
 }
+function onUpdate(e) {
+  store.updateUser(e.key);
+}
 function onDelete(e) {
   store.deleteUser(e.key.id);
 }
@@ -40,11 +43,11 @@ function onDelete(e) {
     :show-borders="true"
     :key-expr="id"
     @row-inserted="onCreate"
+    @row-updated="onUpdate"
     @row-removed="onDelete"
   >
     <DxHeaderFilter :visible="true" />
 
-    <DxHeaderFilter :allow-search="true" />
     <DxEditing
       :allow-updating="true"
       :allow-adding="true"
@@ -55,14 +58,31 @@ function onDelete(e) {
       <DxPopup :show-title="true" title="Данные сотрудника" />
       <DxForm>
         <DxItem data-field="name" />
-        <DxItem data-field="usid" />
+        <DxItem data-field="us_id" />
         <DxItem data-field="phone" />
+        <DxItem data-field="comment" />
+        <DxItem data-field="default_status_id" />
+        <DxItem data-field="birth_date" editor-type="dxDateBox" />
       </DxForm>
     </DxEditing>
 
     <DxColumn data-field="name" caption="ФИО" />
-    <DxColumn data-field="usid" caption="usid" />
+
     <DxColumn data-field="phone" caption="Телефон" />
+    <DxColumn data-field="us_id" caption="usid" />
+    <DxColumn data-field="comment" caption="Коментарий" :visible="false" />
+    <DxColumn
+      data-field="birth_date"
+      caption="Дата рождения"
+      :visible="false"
+    />
+    <DxColumn data-field="default_status_id" caption="Статус по умолчанию">
+      <DxLookup
+        :data-source="store.statuses"
+        value-expr="id"
+        display-expr="description"
+      />
+    </DxColumn>
 
     <DxColumn type="buttons">
       <DxButton name="edit" />

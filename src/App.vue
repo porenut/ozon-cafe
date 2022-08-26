@@ -7,13 +7,14 @@ import Tabs from './components/tabs.vue';
 import { onMounted } from 'vue';
 import store from './store.js';
 
-import deMessages from 'devextreme/localization/messages/ru.json';
+import ruMessages from 'devextreme/localization/messages/ru.json';
 import { locale, loadMessages } from 'devextreme/localization';
 
 onMounted(() => {
-  loadMessages(deMessages);
+  loadMessages(ruMessages);
   locale(navigator.language);
   store.loadUsers();
+  store.loadStatuses();
 });
 </script>
 
