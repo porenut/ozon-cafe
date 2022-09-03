@@ -5,27 +5,27 @@ const store = reactive({
   users: [],
   statuses: [],
   loadStatuses() {
-    axios.get('https://rvz-bar.ru/api/status-list').then((response) => {
+    axios.get('https://rvz-bar.ru/api/status/list').then((response) => {
       store.statuses = response.data;
     });
   },
   loadUsers() {
-    axios.get('https://rvz-bar.ru/api/get-users').then((response) => {
+    axios.get('https://rvz-bar.ru/api/users/list').then((response) => {
       store.users = response.data;
     });
   },
   deleteUser(id) {
-    axios.post('https://rvz-bar.ru/api/delete-user/' + id).then(() => {
+    axios.post('https://rvz-bar.ru/api/users/delete/' + id).then(() => {
       store.loadUsers();
     });
   },
   addUser(data) {
-    axios.post('https://rvz-bar.ru/api/add-user', data).then(() => {
+    axios.post('https://rvz-bar.ru/users/add', data).then(() => {
       store.loadUsers();
     });
   },
   updateUser(data) {
-    axios.post('https://rvz-bar.ru/api/update-user', data).then(() => {
+    axios.post('https://rvz-bar.ru/api/users/update', data).then(() => {
       store.loadUsers();
     });
   },
