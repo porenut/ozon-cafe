@@ -1,5 +1,5 @@
 <script setup>
-import { ref ,reactive } from 'vue';
+import { ref ,reactive, onMounted } from 'vue';
 import store from '../../store.js';
 import {
   DxDataGrid,
@@ -18,7 +18,20 @@ import {
   DxSimpleItem,
 } from 'devextreme-vue/data-grid';
 import DxDateBox from 'devextreme-vue/date-box';
+
 var dateStart,dateEnd;
+
+onMounted(() => {
+    let  addDays = (date, days)=> {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+  dateStart=addDays(new Date(),-4).toLocaleDateString();;
+  dateEnd=addDays(new Date(),4).toLocaleDateString();;
+  loadSchedule();
+})
+
 
 function loadSchedule()
 {
@@ -37,7 +50,17 @@ function onDateEndChanged(e){
   loadSchedule();
 }
 function onUpdate(e) {
-  console.log(e);
+  //console.log(e);
+}
+
+function overrideOnValueChanged(e) {
+  let val = e
+  let standardHandler = e.editorOptions.onValueChanged;
+    e.editorOptions.onValueChanged = function(e) {
+      store.setUserSchedule(val.row.data.id,val.name,e.value);
+
+    standardHandler(e);
+  }
 }
 
 </script>
@@ -68,7 +91,9 @@ function onUpdate(e) {
   <DxDataGrid
     :data-source="store.schedule"
     :show-borders="true" 
+    
     @saving="onUpdate"
+    @editor-preparing="overrideOnValueChanged"
   >
  
   <DxEditing
@@ -81,7 +106,7 @@ function onUpdate(e) {
         caption="ФИО"/>
   <DxColumn
         v-for="day in store.scheduleDays"
-        :width="125"
+        
         :data-field=day
         :caption="(new Date(day)).toLocaleDateString('ru-RU',{weekday: 'short',month: 'numeric', day: 'numeric'})"
         

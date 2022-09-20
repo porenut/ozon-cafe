@@ -31,6 +31,10 @@ const store = reactive({
       store.loadUsers();
     });
   },
+  setUserSchedule(user_id,data,new_status)
+  {
+
+  },
   loadSchedule(data)
   {
     
@@ -43,6 +47,7 @@ const store = reactive({
       {
         let el={};
         el.name=store.users.find(e=>e.id==element.user_id).name ; 
+        el.id=store.users.find(e=>e.id==element.user_id).id ; 
         el[element.day]=store.statuses.find(e=>e.id==element.status_id).status;
         temp[element.user_id]=el;
       }

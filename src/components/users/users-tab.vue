@@ -11,6 +11,7 @@ import {
   DxForm,
   DxToolbar,
   DxItem,
+  DxButton,
   DxHeaderFilter,
   DxSearchPanel,
   DxFilterRow,
@@ -41,7 +42,7 @@ function onDelete(e) {
   <DxDataGrid
     :data-source="store.users"
     :show-borders="true"
-    :key-expr="id"
+    
     @row-inserted="onCreate"
     @row-updated="onUpdate"
     @row-removed="onDelete"
