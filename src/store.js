@@ -33,7 +33,14 @@ const store = reactive({
   },
   setUserSchedule(user_id,data,new_status)
   {
-
+    console.log(user_id,data,new_status);
+    let statusId=store.statuses.find(e=>e.status==new_status).id;
+    let rdata={
+      i:user_id,
+      d:data,
+      s:statusId
+    }
+    axios.get('https://rvz-bar.ru/api/schedule/user/set', {params:rdata})
   },
   loadSchedule(data)
   {
