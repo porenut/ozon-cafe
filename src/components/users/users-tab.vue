@@ -11,10 +11,12 @@ import {
   DxForm,
   DxToolbar,
   DxItem,
+  DxButton,
   DxHeaderFilter,
   DxSearchPanel,
   DxFilterRow,
   DxSimpleItem,
+  DxCheckBox,
 } from 'devextreme-vue/data-grid';
 
 const columns = [
@@ -41,7 +43,8 @@ function onDelete(e) {
   <DxDataGrid
     :data-source="store.users"
     :show-borders="true"
-    :key-expr="id"
+    :columnAutoWidth="true"
+    :allow-column-resizing="true"
     @row-inserted="onCreate"
     @row-updated="onUpdate"
     @row-removed="onDelete"
@@ -53,6 +56,7 @@ function onDelete(e) {
       :allow-adding="true"
       :allow-deleting="true"
       :use-icons="true"
+      
       mode="popup"
     >
       <DxPopup :show-title="true" title="Данные сотрудника" />
@@ -60,6 +64,7 @@ function onDelete(e) {
         <DxItem data-field="name" />
         <DxItem data-field="us_id" />
         <DxItem data-field="phone" />
+        <DxItem data-field="active" editor-type="dxCheckBox"/>
         <DxItem data-field="comment" />
         <DxItem data-field="default_status_id" />
         <DxItem data-field="birth_date" editor-type="dxDateBox" />
@@ -69,7 +74,8 @@ function onDelete(e) {
     <DxColumn data-field="name" caption="ФИО" />
 
     <DxColumn data-field="phone" caption="Телефон" />
-    <DxColumn data-field="us_id" caption="usid" />
+    <DxColumn data-field="us_id" caption="usid" :visible="false" />
+    <DxColumn data-field="active" caption="Активен" :visible="false" />
     <DxColumn data-field="comment" caption="Коментарий" :visible="false" />
     <DxColumn
       data-field="birth_date"

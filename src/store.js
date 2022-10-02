@@ -4,6 +4,8 @@ import axios from 'axios';
 const store = reactive({
   users: [],
   statuses: [],
+  schedule:[],
+  scheduleDays:[],
   loadStatuses() {
     axios.get('https://rvz-bar.ru/api/status/list').then((response) => {
       store.statuses = response.data;
@@ -29,6 +31,45 @@ const store = reactive({
       store.loadUsers();
     });
   },
+  setUserSchedule(user_id,data,new_status)
+  {
+    console.log(user_id,data,new_status);
+    let statusId=store.statuses.find(e=>e.status==new_status).id;
+    let rdata={
+      i:user_id,
+      d:data,
+      s:statusId
+    }
+    axios.get('https://rvz-bar.ru/api/schedule/user/set', {params:rdata})
+  },
+  loadSchedule(data)
+  {
+    
+    axios.get('https://rvz-bar.ru/api/schedule/list',{params:data}).then((response) => {
+      let temp=[];
+      store.schedule=[];
+      response.data.forEach(element => {
+      if(!store.scheduleDays.includes(element.day)) store.scheduleDays.push(element.day);
+      if(!temp[element.user_id])
+      {
+        let el={};
+        el.name=store.users.find(e=>e.id==element.user_id).name ; 
+        el.id=store.users.find(e=>e.id==element.user_id).id ; 
+        el[element.day]=store.statuses.find(e=>e.id==element.status_id).status;
+        temp[element.user_id]=el;
+      }
+      else{
+        temp[element.user_id][element.day]=store.statuses.find(e=>e.id==element.status_id).status;
+      }
+      
+     
+    });
+    temp.forEach(element => {
+      store.schedule.push(element);  
+    });
+    console.log(store.schedule)
+  });
+  }
 });
 
 export default store;
